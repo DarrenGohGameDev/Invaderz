@@ -25,7 +25,7 @@ public class DamagingProjectileComponent : ProjectileComponent
 
         ProjectileComponent collidedProjectile;
 
-        if (other.TryGetComponent<ProjectileComponent>(out collidedProjectile) && collidedProjectile.projectileStat.projectileTeam == projectileStat.projectileTeam) return;
+        if (other.TryGetComponent<ProjectileComponent>(out collidedProjectile) && collidedProjectile.GetProjectileStat().projectileTeam == projectileStat.projectileTeam) return;
 
         collidedHealthComponent.TakeDamage(projectileStat.projectileDamage);
     }

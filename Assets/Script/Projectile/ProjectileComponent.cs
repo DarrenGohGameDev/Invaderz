@@ -5,7 +5,7 @@ public class ProjectileComponent : MonoBehaviour
 {
     private HealthComponent projectileHealthComponent;
 
-    public BaseProjectileStat projectileStat;
+    [SerializeField] protected BaseProjectileStat projectileStat;
 
     protected ProjectileMovemntComponent projectileMovementComponent;
 
@@ -22,5 +22,10 @@ public class ProjectileComponent : MonoBehaviour
     protected virtual void Update()
     {
         projectileMovementComponent.MoveProjectile();
+    }
+
+    public BaseProjectileStat GetProjectileStat()
+    {
+        return projectileStat;
     }
 }

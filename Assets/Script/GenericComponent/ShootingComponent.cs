@@ -6,7 +6,7 @@ public class ShootingComponent : MonoBehaviour
 
     [SerializeField] private ProjectileComponent projectile;
 
-    public bool autoShoot;
+    public bool autoShoot = false;
 
     private void Update()
     {
@@ -18,6 +18,6 @@ public class ShootingComponent : MonoBehaviour
 
     public void Shoot()
     {
-
+        
     }
 }

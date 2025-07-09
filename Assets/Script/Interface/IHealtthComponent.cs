@@ -6,4 +6,9 @@ public interface IHealtthComponent
     float currentHealth { get; }
 
     void TakeDamage(float amount);
+
+    void Heal(float amount);
+
+    void SetCurrentHealth(float value);
+    void SetMaxHealth(float value);
 }

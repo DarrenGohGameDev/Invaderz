@@ -3,32 +3,48 @@ using UnityEngine;
 
 public class ProjectileComponent : MonoBehaviour
 {
-    private HealthComponent projectileHealthComponent;
+    protected HealthComponent projectileHealthComponent;
 
     [SerializeField] protected BaseProjectileStat projectileStat;
 
-    protected ProjectileMovemntComponent projectileMovementComponent;
+    protected ProjectileMovementComponent projectileMovementComponent;
 
-    public ProjectileComponent(Vector2 projectileMovingDirection)
-    {
-        projectileMovementComponent.movingDirection = projectileMovingDirection;
-    }
+    private float projectileDuration;
 
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         projectileHealthComponent = this.GetComponent<HealthComponent>();
         projectileHealthComponent.onTakeDamage += OnProjectileDamaged;
         projectileHealthComponent.onDeath += OnProjectileDestroyed;
+        projectileMovementComponent = this.GetComponent<ProjectileMovementComponent>();
     }
 
-    protected virtual void Update()
+    protected virtual void FixedUpdate()
     {
-        projectileMovementComponent.MoveProjectile();
+        projectileMovementComponent.MoveProjectile(projectileStat.projectileSpeed);
+
+        ProjectileLifeTimer();
+    }
+
+    public virtual void Init(Vector2 direction)
+    {
+        projectileMovementComponent.SetProjectileDirection(direction);
+        projectileDuration = projectileStat.projectileLifeTime;
     }
 
     public BaseProjectileStat GetProjectileStat()
     {
         return projectileStat;
+    }
+
+    protected virtual void ProjectileLifeTimer()
+    {
+        projectileDuration -= Time.deltaTime;
+
+        if (projectileDuration <= 0f)
+        {
+            projectileHealthComponent.Die();
+        }
     }
 
     protected virtual void OnProjectileDamaged(float amount)
@@ -39,5 +55,6 @@ public class ProjectileComponent : MonoBehaviour
     protected virtual void OnProjectileDestroyed()
     {
         // destroy the projectile or something
+        Destroy(this.gameObject);
     }
 }

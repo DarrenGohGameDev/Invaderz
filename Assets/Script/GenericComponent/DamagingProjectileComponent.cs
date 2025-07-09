@@ -2,23 +2,24 @@ using UnityEngine;
 
 public class DamagingProjectileComponent : ProjectileComponent
 {
-    public DamagingProjectileComponent(Vector2 projectileMovingDirection) : base(projectileMovingDirection)
+    protected override void Awake()
     {
-        
+        base.Awake();
     }
 
-    protected override void Start()
+    protected override void FixedUpdate()
     {
-        base.Start();
+        base.FixedUpdate();
     }
 
-    protected override void Update()
+    public override void Init(Vector2 direction)
     {
-        base.Update();
+        base.Init(direction);
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log($"{other.gameObject.name}");
         HealthComponent collidedHealthComponent;
 
         if (!other.TryGetComponent<HealthComponent>(out collidedHealthComponent)) return;
@@ -27,6 +28,7 @@ public class DamagingProjectileComponent : ProjectileComponent
 
         if (other.TryGetComponent<ProjectileComponent>(out collidedProjectile) && collidedProjectile.GetProjectileStat().projectileTeam == projectileStat.projectileTeam) return;
 
+        projectileHealthComponent.Die();
         collidedHealthComponent.TakeDamage(projectileStat.projectileDamage);
     }
 }
